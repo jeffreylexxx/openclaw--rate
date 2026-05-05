@@ -555,7 +555,6 @@ function scoreEvidence(items, releaseItem, issueMeta = {}) {
   if (sampleCount < 3) riskLabels.push({ text: `公开样本极少，置信度低`, type: "negative" });
   else if (sampleCount < 6) riskLabels.push({ text: `样本偏少，限制高分`, type: "negative" });
   if (negativeCount === 0 && sampleCount < 9) riskLabels.push({ text: `未找到足够负面样本，不等于无问题`, type: "negative" });
-  if (releaseComplexity >= 2) riskLabels.push({ text: `变更面较大，升级风险 +${releaseComplexity.toFixed(1)}`, type: "negative" });
   if (releaseRisk > 0) riskLabels.push({ text: `含破坏/迁移风险词`, type: "negative" });
   if (veryNewPenalty > 0) riskLabels.push({ text: `版本较新，观察期不足`, type: "negative" });
   if (hotfixPenalty > 0) riskLabels.push({ text: `热修复版稳定性折扣`, type: "negative" });
@@ -748,6 +747,7 @@ async function buildRows() {
   rows.forEach((row, index) => {
     row.rank = index + 1;
   });
+  spreadDisplayScores(rows);
 
   applyRankMovements(rows);
   saveTodaySnapshot(rows);
@@ -791,6 +791,24 @@ function saveTodaySnapshot(rows) {
   const keys = Object.keys(history).sort();
   while (keys.length > 14) delete history[keys.shift()];
   localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(history));
+}
+
+function spreadDisplayScores(rows) {
+  if (!rows.length) return;
+  const top = rows[0].score;
+  const bottom = rows[rows.length - 1].score;
+  const span = Math.max(1, top - bottom);
+  const maxDisplay = 92;
+  const minDisplay = 8;
+  const stepFloor = rows.length > 1 ? (maxDisplay - minDisplay) / (rows.length - 1) : 0;
+
+  rows.forEach((row, index) => {
+    const normalized = (row.score - bottom) / span;
+    const curveScore = minDisplay + normalized * (maxDisplay - minDisplay);
+    const rankScore = maxDisplay - index * stepFloor;
+    const blended = curveScore * 0.42 + rankScore * 0.58 + scoreSpread(row.version) * 0.35;
+    row.displayScore = clamp(Math.round(blended * 100) / 100, minDisplay, maxDisplay);
+  });
 }
 
 function localVotes() {
@@ -946,7 +964,7 @@ function render() {
     recommendLabel.className = `recommend-label ${recommendation.className}`;
     recommendLabel.textContent = recommendation.text;
     const scoreCell = tr.querySelector(".score-cell");
-    scoreCell.append(scoreMeter(row.score), recommendLabel);
+    scoreCell.append(scoreMeter(row.displayScore ?? row.score), recommendLabel);
 
     const factorList = document.createElement("div");
     factorList.className = "factor-list";
@@ -988,12 +1006,13 @@ function sourceLinks(row) {
   issueLink.textContent = `Issues ${formatIssueCount(row)}`;
   sourceLinksWrap.append(issueLink);
 
-  for (const item of row.topEvidence.filter((entry) => entry.url !== row.url).slice(0, 2)) {
+  const feedback = row.topEvidence.find((entry) => entry.url !== row.url);
+  if (feedback) {
     const link = document.createElement("a");
-    link.href = item.url;
+    link.href = feedback.url;
     link.target = "_blank";
     link.rel = "noreferrer";
-    link.textContent = item.sourceType === "issue" ? "具体反馈" : "外部样本";
+    link.textContent = "具体反馈";
     sourceLinksWrap.append(link);
   }
   return sourceLinksWrap;
