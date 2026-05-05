@@ -38,17 +38,39 @@ const SEEDED_EVIDENCE = {
     evidence("article", "positive", "新增 file-transfer 插件，默认按节点路径策略拒绝越权、拒绝符号链接穿越并限制 16 MB", "https://efficienist.com/openclaw-2026-5-3-adds-file-transfer-between-paired-nodes-and-whatsapp-newsletter-targets/", ["plugin", "security"], 2.1),
     evidence("release", "positive", "Gateway 启动与 Control UI 热路径延迟加载，减少插件、运行时、cron、schema 和模型元数据开销", "https://github.com/openclaw/openclaw/releases/tag/v2026.5.3", ["gateway", "performance"], 2.6),
     evidence("release", "positive", "修复 macOS LaunchAgent 升级恢复、陈旧 Gateway/plugin 状态、流式回复和工具投递等运行时可靠性问题", "https://github.com/openclaw/openclaw/releases/tag/v2026.5.3", ["recovery", "noResponse"], 2.2),
+    evidence("issue", "negative", "iMessage channel polling 在 2026.5.3-1 回归，2026.5.2 正常", "https://github.com/openclaw/openclaw/issues/77503", ["plugin", "regression", "noResponse"], 2.7),
+    evidence("issue", "negative", "Discord GroupChat replies 在 2026.5.3 后不可见，visibleReplies 默认行为变化", "https://github.com/openclaw/openclaw/issues/77746", ["plugin", "ui", "regression"], 2.5),
+    evidence("issue", "negative", "Feishu group messages 升级到 2026.5.3 后 receive replies=0", "https://github.com/openclaw/openclaw/issues/77666", ["plugin", "noResponse", "regression"], 2.5),
+    evidence("issue", "negative", "WhatsApp 首条入站消息阻塞事件循环，eventLoopDelayMaxMs 超过 12 秒", "https://github.com/openclaw/openclaw/issues/77443", ["noResponse", "plugin", "gateway"], 2.8),
+    evidence("issue", "negative", "Discord gateway 在 Windows v2026.5.3-1 卡在 awaiting gateway readiness", "https://github.com/openclaw/openclaw/issues/77747", ["gateway", "plugin", "noResponse"], 2.8),
   ],
   "2026.5.2": [
     evidence("article", "positive", "外部插件安装、更新、doctor repair、依赖报告和 artifact metadata 进入稳定版", "https://openclawlaunch.com/news/openclaw-v2026-5-2-plugin-externalization-grok-4-3", ["plugin", "install", "recovery"], 2.4),
     evidence("release", "positive", "Gateway startup、session listing、task maintenance、plugin loading 和 filesystem guards 热路径瘦身", "https://newreleases.io/project/github/openclaw/openclaw/release/v2026.5.2", ["gateway", "performance"], 2.5),
     evidence("release", "positive", "Control UI、WebChat、Telegram topic、Discord delivery、Slack threads、Signal media 和 web search 兼容性修复", "https://newreleases.io/project/github/openclaw/openclaw/release/v2026.5.2", ["ui", "provider", "noResponse"], 1.9),
+    evidence("issue", "negative", "Feishu channel 升级到 2026.5.2 后 appId/appSecret 字段不兼容并崩溃", "https://github.com/openclaw/openclaw/issues/77116", ["plugin", "crash", "regression"], 2.9),
+    evidence("issue", "negative", "QQ Bot 升级到 2026.5.2 后回复 verbose/repetitive", "https://github.com/openclaw/openclaw/issues/76935", ["plugin", "ui", "regression"], 2.1),
+    evidence("issue", "negative", "自动更新到 2026.5.2 后所有 OpenAI 调用出现 Gateway timeouts", "https://github.com/openclaw/openclaw/issues/77070", ["gateway", "provider", "noResponse"], 3.0),
   ],
   "2026.4.29": [
     evidence("reddit", "negative", "Reddit 用户汇总称 2026.4.29 更新后 CPU spike、响应变慢、部分 Discord/Telegram 回复延迟到分钟级，建议回滚 2026.4.23", "https://www.reddit.com/r/openclaw/comments/1t0opfk/openclaw_2026429_is_eating_cpus_and_breaking/", ["noResponse", "regression", "provider"], 3.2),
     evidence("reddit", "negative", "Reddit 对比称 4.29 no-op subagent spawn 60-80 秒，而 4.23 约 8 秒，chat.history/model list 冷启动也显著变慢", "https://www.reddit.com/r/openclaw/comments/1t1t9qx/2026429_is_broken_avoid_it/", ["noResponse", "tooling", "regression"], 3.1),
     evidence("forum", "negative", "Clawsmith 记录 2026.4.29 TUI 启动进入 100% CPU bundled plugin reload loop，需要 kill -9", "https://www.clwsmth.com/signal/openclaw-tui-100-cpu-bundled-plugin-reload-loop-v2026-4-29", ["crash", "plugin", "noResponse"], 3.0),
     evidence("article", "positive", "Release/upgrade checklist 显示 2026.4.29 增加 startup diagnostics、stale-session recovery、channel fixes 和更安全的 tool-profile 行为", "https://www.getopenclaw.ai/how-to/openclaw-2026-4-29-upgrade-checklist", ["gateway", "recovery", "tooling"], 1.7),
+  ],
+  "2026.4.27": [
+    evidence("issue", "negative", "WhatsApp session 在 2026.4.27 变得不稳定，泄露 thinking traces，并从 Codex fallback 到 MiniMax", "https://github.com/openclaw/openclaw/issues/74886", ["plugin", "provider", "regression"], 3.0),
+    evidence("issue", "negative", "WebChat assistant replies 在 2026.4.27 仍重复出现", "https://github.com/openclaw/openclaw/issues/75239", ["ui", "regression"], 2.2),
+    evidence("issue", "negative", "从 2026.4.29 降级到 2026.4.27 因 stale file-transfer entry 失败", "https://github.com/openclaw/openclaw/issues/75502", ["install", "plugin", "regression"], 2.7),
+    evidence("issue", "negative", "2026.4.27 出现 event-loop saturation 和 ACP session leak", "https://github.com/openclaw/openclaw/issues/74345", ["noResponse", "gateway", "tooling"], 3.0),
+    evidence("issue", "negative", "openclaw infer 在 2026.4.27 无限挂起，子进程 100% CPU 且无网络 I/O", "https://github.com/openclaw/openclaw/issues/74986", ["noResponse", "tooling", "regression"], 3.2),
+  ],
+  "2026.4.26": [
+    evidence("issue", "negative", "2026.4.26 无法降级", "https://github.com/openclaw/openclaw/issues/74069", ["install", "regression"], 2.5),
+    evidence("issue", "negative", "2026.4.26 在 WSL2 上 WhatsApp flaps 且 Telegram polling stalls", "https://github.com/openclaw/openclaw/issues/73602", ["plugin", "noResponse", "regression"], 3.0),
+    evidence("issue", "negative", "近期版本 onboarding slowdown 在 2026.4.26 复现", "https://github.com/openclaw/openclaw/issues/74879", ["install", "ui", "noResponse"], 2.4),
+    evidence("issue", "negative", "openclaw status --usage --json 在 2026.4.26 非 TTY 子进程中挂起/失败", "https://github.com/openclaw/openclaw/issues/74085", ["tooling", "noResponse"], 2.8),
+    evidence("issue", "negative", "openclaw_gateway 拒绝 Paperclip agent heartbeats，报 unexpected property paperclip", "https://github.com/openclaw/openclaw/issues/74635", ["gateway", "plugin", "error"], 2.6),
   ],
   "2026.4.24": [
     evidence("reddit", "negative", "Reddit 警告不要升级 2026.4.24，Bonjour/mDNS 插件 unhandled promise rejection 导致 Node 进程约每 20 秒崩溃", "https://www.reddit.com/r/openclaw/comments/1sw1s30/do_not_upgrade_to_2026424/", ["plugin", "crash", "gateway"], 3.4),
@@ -66,6 +88,10 @@ const SEEDED_EVIDENCE = {
   ],
   "2026.4.20": [
     evidence("news", "positive", "VulnCheck 披露 OpenClaw < 2026.4.20 存在 paired-device pairing authorization 问题，说明 4.20 是该安全修复边界", "https://www.vulncheck.com/advisories/openclaw-improper-authorization-in-paired-device-pairing-actions", ["security"], 1.7),
+    evidence("issue", "negative", "Cross-exec stale file reads 在 2026.4.20 回归，疑似跨进程 vnode/dentry cache race", "https://github.com/openclaw/openclaw/issues/71326", ["tooling", "regression"], 2.8),
+    evidence("issue", "negative", "2026.4.20 版本升级锁死", "https://github.com/openclaw/openclaw/issues/69950", ["install", "regression", "noResponse"], 2.7),
+    evidence("issue", "negative", "Feishu bundle 缺失 @larksuiteoapi/node-sdk 声明依赖", "https://github.com/openclaw/openclaw/issues/70093", ["plugin", "install"], 2.6),
+    evidence("issue", "negative", "Mattermost plugin drops post_edited events，编辑 @mentions 不触发 agent wake", "https://github.com/openclaw/openclaw/issues/71930", ["plugin", "noResponse"], 2.4),
   ],
   "2026.4.15": [
     evidence("issue", "negative", "Fresh install 后 OpenRouter onboarding 显示成功，但 agent 完全沉默，无 typing/status/正常回复", "https://github.com/openclaw/openclaw/issues/68163", ["provider", "noResponse"], 3.0),
@@ -75,6 +101,10 @@ const SEEDED_EVIDENCE = {
   ],
   "2026.4.14": [
     evidence("issue", "negative", "exec/process 工具返回空结果 No result provided，WebChat 显示 exit code 0 但 agent 收不到结果", "https://github.com/openclaw/openclaw/issues/67896", ["tooling", "regression"], 3.1),
+    evidence("issue", "negative", "models.mode=replace 仍触发隐式 provider discovery，导致大幅启动延迟", "https://github.com/openclaw/openclaw/issues/66957", ["provider", "gateway", "noResponse"], 2.8),
+    evidence("issue", "negative", "macOS 下 Dashboard 因 SSH_* 环境变量误报 No GUI detected", "https://github.com/openclaw/openclaw/issues/67088", ["ui", "regression"], 2.2),
+    evidence("issue", "negative", "FeiShu QR Code 在 onboard 过程中不可用", "https://github.com/openclaw/openclaw/issues/67438", ["plugin", "install"], 2.4),
+    evidence("issue", "negative", "Control UI 路径重复导致 404，聊天功能无法使用", "https://github.com/openclaw/openclaw/issues/66946", ["ui", "error", "noResponse"], 2.8),
     evidence("release", "positive", "维护版聚焦 channel reliability、dashboard fixes、Gateway startup 和 provider compatibility", "https://github.com/openclaw/openclaw/releases/tag/v2026.4.14", ["gateway", "ui", "provider"], 1.4),
   ],
   "2026.4.12": [
@@ -112,6 +142,9 @@ const SEEDED_EVIDENCE = {
   ],
   "2026.4.1": [
     evidence("issue", "negative", "ACP sessions spawn 后几秒内 dead，summary=queue owner unavailable，阻断本地 loopback gateway 的 ACP 编码工作", "https://github.com/openclaw/openclaw/issues/59274", ["gateway", "noResponse", "regression"], 3.0),
+    evidence("issue", "negative", "auth-profiles.json 从 2026.4.1 起拒绝 type=aws-sdk，破坏 EC2/IMDS Bedrock 配置", "https://github.com/openclaw/openclaw/issues/69708", ["provider", "regression", "install"], 2.8),
+    evidence("issue", "negative", "arm64/Raspberry Pi 5 间歇性 JSON parse error", "https://github.com/openclaw/openclaw/issues/61137", ["error", "gateway"], 2.1),
+    evidence("issue", "negative", "bundled plugins openshell 从 2026.03.13 后不能正确工作，在 2026.4.1 搜索结果中仍相关", "https://github.com/openclaw/openclaw/issues/59528", ["plugin", "tooling", "regression"], 2.3),
   ],
   "2026.3.31": [
     evidence("issue", "negative", "Dashboard GET / 每次返回 500 Internal Server Error，Gateway/TUI/WebSocket 仍在但 HTTP handler 崩溃", "https://github.com/openclaw/openclaw/issues/58814", ["ui", "error"], 3.0),
@@ -162,28 +195,28 @@ const SOURCE_WEIGHT = {
 
 const FALLBACK_ISSUE_COUNTS = {
   "2026.5.3-1": 152,
-  "2026.5.3": 164,
+  "2026.5.3": 187,
   "2026.5.2": 340,
   "2026.4.29": 429,
   "2026.4.27": 282,
-  "2026.4.26": 571,
+  "2026.4.26": 573,
   "2026.4.25": 344,
   "2026.4.24": 601,
   "2026.4.23": 439,
-  "2026.4.22": 420,
+  "2026.4.22": 384,
   "2026.4.21": 390,
-  "2026.4.20": 420,
+  "2026.4.20": 214,
   "2026.4.15": 240,
-  "2026.4.14": 250,
+  "2026.4.14": 586,
   "2026.4.12": 361,
   "2026.4.11": 300,
   "2026.4.10": 260,
   "2026.4.9": 130,
   "2026.4.8": 210,
   "2026.4.7": 300,
-  "2026.4.5": 180,
+  "2026.4.5": 808,
   "2026.4.2": 220,
-  "2026.4.1": 200,
+  "2026.4.1": 390,
   "2026.3.31": 220,
   "2026.3.28": 180,
 };
@@ -199,6 +232,11 @@ const VERIFIED_FALLBACK_ISSUE_COUNTS = new Set([
   "2026.4.24",
   "2026.4.23",
   "2026.4.12",
+  "2026.4.20",
+  "2026.4.22",
+  "2026.4.5",
+  "2026.4.14",
+  "2026.4.1",
 ]);
 
 const state = {
@@ -536,7 +574,7 @@ function scoreEvidence(items, releaseItem, issueMeta = {}) {
   const topEvidence = items
     .slice()
     .sort((a, b) => Number(b.strength || 1) - Number(a.strength || 1))
-    .slice(0, 3);
+    .slice(0, 5);
 
   return {
     score,
@@ -622,12 +660,12 @@ function classifyRecommendation(index) {
 function factorLabels(row) {
   const labels = row.labels
     .filter((item) => !/GitHub Issues|Reddit|REDDIT|CSDN|Discord/i.test(item.text))
-    .slice(0, 5);
+    .slice(0, 7);
   for (const item of row.topEvidence) {
     const text = cleanFeedbackText(item.title);
     if (text) labels.push({ text: truncate(text, 30), type: item.sentiment });
   }
-  return labels.slice(0, 8);
+  return labels.slice(0, 10);
 }
 
 function scoreSpread(version) {
