@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OpenClaw 版本易用性评测</title>
+    <meta
+      name="description"
+      content="基于公开用户反馈、GitHub Issue 与 Release 信息动态评估 OpenClaw 各版本易用性和升级推荐指数。"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">OpenClaw Review Monitor</p>
+        <h1>OpenClaw 版本易用性评测系统</h1>
+      </div>
+      <div class="status-cluster" aria-live="polite">
+        <span id="syncStatus" class="status-pill">准备更新</span>
+        <button id="refreshButton" class="icon-button" type="button" aria-label="刷新数据" title="刷新数据">
+          ↻
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="summary-grid" aria-label="当前概况">
+        <div class="metric-panel">
+          <span>最新正式版</span>
+          <strong id="latestStable">读取中</strong>
+        </div>
+        <div class="metric-panel">
+          <span>最新纳入版本</span>
+          <strong id="latestAny">读取中</strong>
+        </div>
+        <div class="metric-panel">
+          <span>已纳入版本数量</span>
+          <strong id="versionCount">0</strong>
+        </div>
+        <div class="metric-panel">
+          <span>评分来源</span>
+          <strong>公开反馈</strong>
+        </div>
+      </section>
+
+      <section class="controls-band" aria-label="筛选与说明">
+        <div class="filter-group" role="tablist" aria-label="版本筛选">
+          <button class="filter-button active" type="button" data-filter="all">全部</button>
+          <button class="filter-button" type="button" data-filter="stable">正式主版本</button>
+          <button class="filter-button" type="button" data-filter="hotfix">热修复</button>
+          <button class="filter-button" type="button" data-filter="recommended">推荐升级</button>
+        </div>
+        <p class="method-note">
+          每次打开页面会拉取 GitHub Releases，但 Beta、Alpha、RC、Preview 等预发布版本不纳入统计。页面会按正式版检索公开 Issue，并结合内置公开网页、文章、论坛样本与可选搜索接口，评估启动、插件、崩溃、无响应、Dashboard、安装升级、Provider 和工具执行等具体问题。
+        </p>
+      </section>
+
+      <section class="table-shell" aria-label="版本排名">
+        <div class="table-headline">
+          <h2>易用性排名</h2>
+          <p id="snapshotNote">等待首次评分</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <colgroup>
+              <col class="rank-col" />
+              <col class="version-col" />
+              <col class="score-col" />
+              <col class="factor-col" />
+              <col class="vote-col" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>排名</th>
+                <th>版本</th>
+                <th>易用分 / 升级指数</th>
+                <th>主要反馈因素</th>
+                <th>参与互动</th>
+              </tr>
+            </thead>
+            <tbody id="rankingBody">
+              <tr>
+                <td colspan="5" class="loading-row">正在加载公开反馈...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="explain-band" aria-label="评分说明">
+        <div>
+          <h2>评分模型</h2>
+          <p>
+            评分不再因为“没有搜到问题”直接给满分。系统从 72 分中位线起算，按公开证据强度加减分；具体负面样本包括网关启动失败、插件加载错误、崩溃、500、无响应、升级回归、安装修复失败、Provider 沉默和工具结果丢失。若样本不足，高分会被扣分或封顶。
+          </p>
+        </div>
+        <div>
+          <h2>默认数据源</h2>
+          <p>
+            默认使用 GitHub Releases、GitHub Issue 搜索、Release 反应数和 2026-05-05 整理的公开证据种子。若配置 <code>window.OPENCLAW_SEARCH_API</code>，还可接入论坛、帖子、社交媒体、新闻和网页搜索服务；点击推荐票只统计人气，不影响排名。
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <template id="rowTemplate">
+      <tr>
+        <td class="rank-cell"></td>
+        <td class="version-cell"></td>
+        <td class="score-cell"></td>
+        <td class="factor-cell"></td>
+        <td class="vote-cell"></td>
+      </tr>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
