@@ -2,6 +2,9 @@
 
 这个目录是一个可直接发布到 GitHub Pages 的静态网页。页面打开时会尝试更新 OpenClaw Releases，只纳入 `2026.3.28` 以及之后的正式版；Beta、Alpha、RC、Preview 等预发布版本不会进入统计。页面会按版本检索公开 GitHub Issue 反馈，并结合内置公开网页、文章、论坛样本和可选搜索接口，用启动、插件、崩溃、错误、无响应、Dashboard、安装升级、Provider 和工具执行等因素生成易用性排名和升级推荐指数。
 
+## 在线预览
+https://jeffreylexxx.github.io/openclaw--rate/
+
 ## 本地预览
 
 在这个目录启动静态服务器：
